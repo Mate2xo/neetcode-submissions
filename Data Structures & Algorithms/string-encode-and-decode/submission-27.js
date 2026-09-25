@@ -1,0 +1,33 @@
+class Solution {
+    /**
+     * @param {string[]} strs
+     * @returns {string}
+     */
+    encode(strs) {
+        if (strs.length === 0) return;
+        const lengths = []
+        let encoded = ''
+
+        for (let str of strs) lengths.push(str.length)
+        for (let i = 0; i < strs.length; i++) encoded += `#;${lengths[i]};#${strs[i]}`
+
+        return encoded
+    }
+
+    /**
+     * @param {string} str
+     * @returns {string[]}
+     */
+    decode(str) {
+        if (str === undefined) return ''
+
+        const [result, tagRegex] = [[], /#;(\d+);#/g]
+        let match;
+        while (match = tagRegex.exec(str)){
+            let wordStart = match.index + match[0].length
+            let wordEnd = wordStart + Number(match[1])
+            result.push(str.slice(wordStart, wordEnd))
+        }
+        return result
+    }
+}
